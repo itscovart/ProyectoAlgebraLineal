@@ -1,6 +1,6 @@
 import numpy as np
 
-# Validamos que las filas no tengan cantidad de columnas distintas
+# Validamos que las filas no tengan cantidad de columnas distintas 
 def validar_n_columnas_filas(matriz:list, n_columnas:int) -> bool:
     for fila in matriz:
         if len(fila) != n_columnas:
@@ -20,7 +20,7 @@ def inconsistencia(matriz:list, n_columnas:int) -> bool:
                 return True
     return False
 
-#En caso de ser un sistema con infitas soluciones calculan las variables libres
+#En caso de ser un sistema con infitas soluciones calculan las variables libres.
 def variables_libres(matriz:list,n_columnas:int):
     matriz = np.array(matriz)
 
