@@ -1,5 +1,4 @@
 from fastapi import HTTPException
-import numpy as np
 from services import validaciones
 
 def convertir_txt_matriz(contenido: str, separador: str = ",") -> list[list[float]]:
