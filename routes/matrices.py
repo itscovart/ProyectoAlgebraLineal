@@ -13,18 +13,17 @@ async def procesar_matriz(
   texto = await archivo.read()
   contenido = texto.decode('utf-8')
   matriz = archivo_matriz.convertir_txt_matriz(contenido=contenido, separador=",")
-  matriz_np = np.array(matriz)
   
   if(operacion == "Determinante"):
-    respuesta = determinante.obtener_determinante(matriz_np)
+    respuesta = determinante.obtener_determinante(matriz)
   elif(operacion == "SEL"):
-    respuesta = sel.resolver_matriz(matriz_np)
+    respuesta = sel.resolver_matriz(matriz)
   elif(operacion == "Inversa"):
-    respuesta = inversa.obtener_inversa(matriz_np)
+    respuesta = inversa.obtener_inversa(matriz)
   else:
     raise HTTPException(status_code=400, detail="Operacion no valida")
   
-  comentario, matrices_solucion, id_pasos = procesar_respuesta.procesar_respuestas_operacion()
+  comentario, matrices_solucion, id_pasos = respuesta
   
   return {
     "operacion": operacion,
