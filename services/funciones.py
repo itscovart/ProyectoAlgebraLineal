@@ -56,8 +56,8 @@ def Hacer_cero_arriba(matriz, indice_pivote) -> list:
 
 def encontrar_pivote_nuevo(matriz, indice_inicial) -> int:
   indice = indice_inicial
-  for i, _ in enumerate(matriz)[indice_inicial:]:
-    if(matriz[i][i] != 0):
+  for i in range(indice_inicial + 1, len(matriz)):
+    if matriz[i][indice_inicial] != 0:
       indice = i
       break
   return indice
