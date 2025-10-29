@@ -7,7 +7,6 @@ def validar_tamaño_filas(matriz) -> bool:
       break
   return respuesta
 
-def validar_matriz_cuadrada(matriz):
-  columnas = len(matriz[0])
-  filas = len(matriz)
+def validar_matriz_cuadrada(matriz) -> bool:
+  columnas, filas = len(matriz[0]), len(matriz)
   return columnas == filas
