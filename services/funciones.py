@@ -17,9 +17,10 @@ def Intercambiar_filas(matriz, fila_base, fila_destino) -> list:
 """
 def Hacer_uno_pivote(fila, indice_columna) -> list:
   pivote = 1/fila[indice_columna]
+  factor = fila[indice_columna]
   for i, valor in enumerate(fila):
     fila[i] = pivote * valor
-  return fila
+  return fila, factor
 
 """
   Funcion para hacer ceros abajo del pivote
@@ -62,7 +63,8 @@ def encontrar_pivote_nuevo(matriz, indice_inicial) -> int:
   return indice
   
 def concatenar_matrices(matriz_izquierda, matriz_derecha):
-  9
+  matriz_unida = [fila_izq + fila_der for fila_izq, fila_der in zip(matriz_izquierda, matriz_derecha)]
+  return matriz_unida
   
 """
   Funcion para imprimir con formato adecuado la matriz resultante
