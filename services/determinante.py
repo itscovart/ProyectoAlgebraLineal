@@ -1,5 +1,5 @@
 import copy
-import funciones, validaciones
+from services import funciones, validaciones
 
 def Gauss_Jordan_Determinante(matriz):
   pasos = []

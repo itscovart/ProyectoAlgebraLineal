@@ -1,5 +1,5 @@
 import copy
-import funciones, validaciones, determinante
+from services import funciones, validaciones
 
 def Gauss_Jordan_Inversa(matriz, tamaño):
   pasos_inversa = []
