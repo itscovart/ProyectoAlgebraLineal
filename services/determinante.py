@@ -13,6 +13,7 @@ def Gauss_Jordan_Determinante(matriz):
         nuevo_indice = funciones.encontrar_pivote_nuevo(matriz=matriz, indice_inicial=i)
         if(nuevo_indice == i):
           solucion = False
+          valor_determinante = 0
           break
         else:
           matriz = funciones.Intercambiar_filas(matriz=matriz, fila_base=i, fila_destino=nuevo_indice)
