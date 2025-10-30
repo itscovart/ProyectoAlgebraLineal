@@ -1,6 +1,7 @@
 from fastapi import APIRouter, File, Form, UploadFile, HTTPException
 from services import determinante, inversa, sel
 from utils import archivo_matriz
+import copy
 
 router = APIRouter()
 
@@ -14,11 +15,11 @@ async def procesar_matriz(
   matriz = archivo_matriz.convertir_txt_matriz(contenido=contenido, separador=",")
   
   if(operacion == "Determinante"):
-    respuesta = determinante.obtener_determinante(matriz)
+    respuesta = determinante.obtener_determinante(copy.deepcopy(matriz))
   elif(operacion == "SEL"):
-    respuesta = sel.resolver_matriz(matriz)
+    respuesta = sel.resolver_matriz(copy.deepcopy(matriz))
   elif(operacion == "Inversa"):
-    respuesta = inversa.obtener_inversa(matriz)
+    respuesta = inversa.obtener_inversa(copy.deepcopy(matriz))
   else:
     raise HTTPException(status_code=400, detail="Operacion no valida")
   
