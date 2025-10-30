@@ -10,3 +10,26 @@ def validar_tamaño_filas(matriz) -> bool:
 def validar_matriz_cuadrada(matriz) -> bool:
   columnas, filas = len(matriz[0]), len(matriz)
   return columnas == filas
+
+def validar_existencia_filas_ceros(matriz) -> bool:
+  for fila in matriz:
+    existencia_ceros = False
+    for valor in fila:
+      if(valor == 0):
+        existencia_ceros = True
+        break
+    if(existencia_ceros == True):
+      break
+  return existencia_ceros
+
+def validar_existencia_columnas_ceros(matriz) -> bool:
+  tamaño = len(matriz)
+  for j, _ in range(tamaño):
+    existencia_ceros = False
+    for i, _ in range(tamaño):
+      if(matriz[i][j] == 0):
+        existencia_ceros = True
+        break
+    if(existencia_ceros == True):
+      break
+  return existencia_ceros
