@@ -22,6 +22,6 @@ def validar_existencia_columnas_ceros(matriz) -> bool:
   tamaño = len(matriz)
   existencia_puros_ceros = False
   for j in range(tamaño):
-    if all(matriz[i][j] for i in range(tamaño)):
+    if all(matriz[i][j] == 0 for i in range(tamaño)):
       existencia_puros_ceros = True
   return existencia_puros_ceros
