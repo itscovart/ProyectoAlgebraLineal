@@ -24,9 +24,9 @@ def validar_existencia_filas_ceros(matriz) -> bool:
 
 def validar_existencia_columnas_ceros(matriz) -> bool:
   tamaño = len(matriz)
-  for j, _ in range(tamaño):
+  for j in range(tamaño):
     existencia_ceros = False
-    for i, _ in range(tamaño):
+    for i in range(tamaño):
       if(matriz[i][j] == 0):
         existencia_ceros = True
         break
