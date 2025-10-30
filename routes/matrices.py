@@ -1,7 +1,6 @@
 from fastapi import APIRouter, File, Form, UploadFile, HTTPException
 from services import determinante, inversa, sel
 from utils import archivo_matriz
-import numpy as np
 
 router = APIRouter()
 
