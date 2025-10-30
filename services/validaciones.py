@@ -12,24 +12,16 @@ def validar_matriz_cuadrada(matriz) -> bool:
   return columnas == filas
 
 def validar_existencia_filas_ceros(matriz) -> bool:
+  existencia_puros_ceros = False
   for fila in matriz:
-    existencia_ceros = False
-    for valor in fila:
-      if(valor == 0):
-        existencia_ceros = True
-        break
-    if(existencia_ceros == True):
-      break
-  return existencia_ceros
+    if all(valor == 0 for valor in fila):
+      existencia_puros_ceros = True
+  return existencia_puros_ceros
 
 def validar_existencia_columnas_ceros(matriz) -> bool:
   tamaño = len(matriz)
+  existencia_puros_ceros = False
   for j in range(tamaño):
-    existencia_ceros = False
-    for i in range(tamaño):
-      if(matriz[i][j] == 0):
-        existencia_ceros = True
-        break
-    if(existencia_ceros == True):
-      break
-  return existencia_ceros
+    if all(matriz[i][j] for i in range(tamaño)):
+      existencia_puros_ceros = True
+  return existencia_puros_ceros
