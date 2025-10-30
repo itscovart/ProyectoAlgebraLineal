@@ -1,5 +1,5 @@
 import copy
-from services import funciones, validaciones, determinante
+import funciones, validaciones, determinante
 
 def Gauss_Jordan_Inversa(matriz, tamaño):
   pasos_inversa = []
@@ -34,7 +34,8 @@ def Gauss_Jordan_Inversa(matriz, tamaño):
   return pasos_inversa, id_pasos_inversa, solucion
 
 def obtener_inversa(matriz):
-  if(determinante.obtener_determinante(matriz=matriz) == False):
+  valor_determinante, _, _, _ = determinante.obtener_determinante(matriz=matriz)
+  if(valor_determinante == 0):
     respuesta = ["La matriz tiene como determinante 0 por lo tanto no es una matriz invertible", 0, 0]
   elif (validaciones.validar_matriz_cuadrada(matriz=matriz) == False):
     respuesta = ["Recuerda que para calcular la inversa de una matriz, esta matriz tiene que ser cuadrada, Amxm", 0, 0]
