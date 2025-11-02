@@ -5,6 +5,7 @@ def Gauss_Jordan_Determinante(matriz):
   pasos = []
   id_pasos = []
   solucion = True
+  
   if not (validaciones.validar_existencia_filas_ceros(matriz=matriz) or validaciones.validar_existencia_columnas_ceros(matriz=matriz)):
     valor_determinante = 1
     for i, fila in enumerate(matriz):
@@ -20,8 +21,9 @@ def Gauss_Jordan_Determinante(matriz):
           pasos.append(copy.deepcopy(matriz))
           id_pasos.append([1, i, nuevo_indice])
           valor_determinante *= -1
-      elif(pivote != 1):
-        matriz[i], factor = funciones.Hacer_uno_pivote(fila=fila, indice_columna=i)
+          pivote = matriz[i][i]
+      if(pivote != 1):
+        matriz[i], factor = funciones.Hacer_uno_pivote(fila=matriz[i], indice_columna=i)
         pasos.append(copy.deepcopy(matriz))
         id_pasos.append([2, factor])
         valor_determinante *= factor

@@ -19,8 +19,8 @@ def Gauss_Jordan_Inversa(matriz, tamaño):
         id_pasos_inversa.append([1, i, indice_pivote_nuevo])
         pivote = matriz[i][i]
         
-    elif(pivote != 1):
-      matriz[i], factor = funciones.Hacer_uno_pivote(fila=fila, indice_columna=i)
+    if(pivote != 1):
+      matriz[i], factor = funciones.Hacer_uno_pivote(fila=matriz[i], indice_columna=i)
       pasos_inversa.append(copy.deepcopy(matriz))
       id_pasos_inversa.append([2, factor])
       
@@ -30,15 +30,19 @@ def Gauss_Jordan_Inversa(matriz, tamaño):
     matriz = funciones.Hacer_cero_arriba(matriz=matriz, indice_pivote=i)
     pasos_inversa.append(copy.deepcopy(matriz))
     id_pasos_inversa.append([4])
+    
+    # al final del algoritmo
+  if not pasos_inversa or pasos_inversa[-1] is not matriz:
+    pasos_inversa.append(copy.deepcopy(matriz)); id_pasos_inversa.append(["final"])
       
   return pasos_inversa, id_pasos_inversa, solucion
 
 def obtener_inversa(matriz):
+  if (validaciones.validar_matriz_cuadrada(matriz=matriz) == False):
+    respuesta = ["Recuerda que para calcular la inversa de una matriz, esta matriz tiene que ser cuadrada, Amxm", 0, 0]
   valor_determinante = determinante.Gauss_Jordan_Determinante(matriz=matriz)[0]
   if(valor_determinante == 0):
     respuesta = ["La matriz tiene como determinante 0 por lo tanto no es una matriz invertible", 0, 0]
-  elif (validaciones.validar_matriz_cuadrada(matriz=matriz) == False):
-    respuesta = ["Recuerda que para calcular la inversa de una matriz, esta matriz tiene que ser cuadrada, Amxm", 0, 0]
   else:
     tamaño = len(matriz)
     matriz_identidad = funciones.crear_matriz_identidad(tamaño=tamaño)
@@ -46,4 +50,3 @@ def obtener_inversa(matriz):
     inversa, id_pasos, solucion = Gauss_Jordan_Inversa(matriz=matriz_unida, tamaño=tamaño)
     respuesta = ["La matriz original si tiene inversa", inversa, id_pasos] if solucion == True else ["La matriz no se pudo resolver debido a que no se encontraron mas pivotes distinto de 0", inversa, id_pasos]
   return respuesta
-  
