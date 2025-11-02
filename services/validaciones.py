@@ -25,3 +25,8 @@ def validar_existencia_columnas_ceros(matriz) -> bool:
     if all(matriz[i][j] == 0 for i in range(tamaño)):
       existencia_puros_ceros = True
   return existencia_puros_ceros
+
+def validar_tamaño_minimo_sel(matriz):
+  filas = len(matriz)
+  columnas = len(matriz[0])
+  return filas >= 1 and columnas >= 2
