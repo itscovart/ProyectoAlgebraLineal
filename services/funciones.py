@@ -90,3 +90,50 @@ def ImprimirMatriz(matriz):
 def crear_matriz_identidad(tamaño):
   matriz_identidad = [[1 if i == j else 0 for j in range(tamaño)] for i in range(tamaño)]
   return matriz_identidad
+
+def separar_matriz_aumentada(matriz):
+  coeficientes = copy.deepcopy([fila[:-1] for fila in matriz])
+  igualdades = copy.deepcopy([[fila[-1]] for fila in matriz])
+  return coeficientes, igualdades
+
+def procesar_solucion_sel(solucion, matriz):
+  inconsistencia, fila_inconsistencia = validar_incosistencia_sel(matriz=matriz)
+  if not inconsistencia:
+    coeficientes, igualdades = separar_matriz_aumentada(matriz=matriz)
+    num_vars = len(coeficientes[0])
+    
+    if(solucion[0] == True):
+      claves = [f"v{i + 1}" for i in range(num_vars)]
+      valores = [igualdades[i][0] for i in range(num_vars)]
+      resultado = obtener_dict_valores_sel(claves=claves, valores=valores)
+      
+    else:
+      limite = min(solucion[1], num_vars)
+      
+      claves = [f"v{i + 1}" for i in range(limite)]
+      valores = [igualdades[i][0] for i in range(limite)]
+      soluciones_sel = obtener_dict_valores_sel(claves=claves, valores=valores)
+      
+      claves_dependientes = [f"v{i + 1}" for i in range(limite, num_vars)]
+      valores_dependientes = [" ∈ ℝ" for _ in range(limite, num_vars)]
+      soluciones_sel_dependientes = obtener_dict_valores_sel(claves=claves_dependientes, valores=valores_dependientes)
+      
+      resultado = soluciones_sel | soluciones_sel_dependientes
+  else:
+    resultado = f"El sistema de ecuaciones lineales no tiene conjunto solucion debido a una inconsistencia en la ecuacion resultante {fila_inconsistencia + 1}"
+  return resultado
+    
+def obtener_dict_valores_sel(claves, valores):
+  solucion = {}
+  for k, v in zip(claves, valores):
+      solucion[k] = v
+  return solucion
+
+def validar_incosistencia_sel(matriz):
+  resultado = [False, 0]
+  for i, fila in enumerate(matriz):
+    if all(valor == 0 for valor in fila[:-1]) and fila[-1] != 0:
+      resultado = [True, i]
+      break
+  return resultado
+      
