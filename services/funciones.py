@@ -1,3 +1,5 @@
+import copy
+
 """
   Funcion para intercambiar filas
   Input: matriz, fila a cambiar, fila destino
@@ -5,10 +7,11 @@
 """
 
 def Intercambiar_filas(matriz, fila_base, fila_destino) -> list:
-  temp = matriz[fila_base]
-  matriz[fila_base] = matriz[fila_destino]
-  matriz[fila_destino] = temp
-  return matriz
+  nueva_matriz = copy.deepcopy(matriz)
+  temp = nueva_matriz[fila_base]
+  nueva_matriz[fila_base] = nueva_matriz[fila_destino]
+  nueva_matriz[fila_destino] = temp
+  return nueva_matriz
 
 """
   Funcion para hacer uno el pivote y todos los elementos de su fila
@@ -16,11 +19,12 @@ def Intercambiar_filas(matriz, fila_base, fila_destino) -> list:
   Output: Matriz con fila afectada y pivote igual a 1
 """
 def Hacer_uno_pivote(fila, indice_columna) -> list:
-  pivote = 1/fila[indice_columna]
-  factor = fila[indice_columna]
-  for i, valor in enumerate(fila):
-    fila[i] = pivote * valor
-  return fila, factor
+  nueva_fila = fila.copy()
+  pivote = 1/nueva_fila[indice_columna]
+  factor = nueva_fila[indice_columna]
+  for i, valor in enumerate(nueva_fila):
+    nueva_fila[i] = pivote * valor
+  return nueva_fila, factor
 
 """
   Funcion para hacer ceros abajo del pivote
@@ -28,14 +32,15 @@ def Hacer_uno_pivote(fila, indice_columna) -> list:
   Output: Matriz con filas afectadas
 """
 def Hacer_cero_abajo(matriz, indice_pivote) -> list:
-  if(indice_pivote == (len(matriz) - 1)):
-    res = matriz
+  nueva_matriz = copy.deepcopy(matriz)
+  if(indice_pivote == (len(nueva_matriz) - 1)):
+    res = nueva_matriz
   else:
-    for i, fila in enumerate(matriz[indice_pivote + 1:], indice_pivote + 1):
-      factor = matriz[i][indice_pivote]
+    for i, fila in enumerate(nueva_matriz[indice_pivote + 1:], indice_pivote + 1):
+      factor = nueva_matriz[i][indice_pivote]
       for j, _ in enumerate(fila):
-        matriz[i][j] -= factor * matriz[indice_pivote][j]
-    res = matriz
+        nueva_matriz[i][j] -= factor * nueva_matriz[indice_pivote][j]
+    res = nueva_matriz
   return res
 
 """
@@ -44,14 +49,15 @@ def Hacer_cero_abajo(matriz, indice_pivote) -> list:
   Output: Matriz con filas afectadas
 """
 def Hacer_cero_arriba(matriz, indice_pivote) -> list:
+  nueva_matriz = copy.deepcopy(matriz)
   if(indice_pivote == 0):
-    res = matriz
+    res = nueva_matriz
   else:
-    for i, fila in enumerate(matriz[:indice_pivote]):
-      factor = matriz[i][indice_pivote]
+    for i, fila in enumerate(nueva_matriz[:indice_pivote]):
+      factor = nueva_matriz[i][indice_pivote]
       for j, _ in enumerate(fila):
-        matriz[i][j] -= factor * matriz[indice_pivote][j]
-    res = matriz
+        nueva_matriz[i][j] -= factor * nueva_matriz[indice_pivote][j]
+    res = nueva_matriz
   return res
 
 def encontrar_pivote_nuevo(matriz, indice_inicial) -> int:
@@ -63,8 +69,10 @@ def encontrar_pivote_nuevo(matriz, indice_inicial) -> int:
   return indice
   
 def concatenar_matrices(matriz_izquierda, matriz_derecha):
-  matriz_unida = [fila_izq + fila_der for fila_izq, fila_der in zip(matriz_izquierda, matriz_derecha)]
-  return matriz_unida
+    matriz_izquierda = copy.deepcopy(matriz_izquierda)
+    matriz_derecha = copy.deepcopy(matriz_derecha)
+    matriz_unida = [fila_izq + fila_der for fila_izq, fila_der in zip(matriz_izquierda, matriz_derecha)]
+    return matriz_unida
   
 """
   Funcion para imprimir con formato adecuado la matriz resultante
