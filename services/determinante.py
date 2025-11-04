@@ -46,6 +46,11 @@ def Gauss_Jordan_Determinante(matriz):
 
       i += 1
       j = col_piv + 1
+      
+    # Si no se alcanzó un pivote por cada fila (rango < tamaño), el determinante es 0
+    if i < tamaño:
+      solucion = False
+      valor_determinante = 0
   
   else:
     valor_determinante = 0
