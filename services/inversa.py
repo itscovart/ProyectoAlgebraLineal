@@ -6,35 +6,41 @@ def Gauss_Jordan_Inversa(matriz, tamaño):
   id_pasos_inversa = []
   solucion = True
   
-  for i, fila in enumerate(matriz):
-    pivote = matriz[i][i]
-    if(pivote == 0):
-      indice_pivote_nuevo = funciones.encontrar_pivote_nuevo(matriz=matriz, indice_inicial=i)
-      if(indice_pivote_nuevo == i):
-        solucion = False
-        break
-      else:
-        matriz = funciones.Intercambiar_filas(matriz=matriz, fila_base=i, fila_destino=indice_pivote_nuevo)
-        pasos_inversa.append(copy.deepcopy(matriz))
-        id_pasos_inversa.append([1, i, indice_pivote_nuevo])
-        pivote = matriz[i][i]
-        
-    if(pivote != 1):
-      matriz[i], factor = funciones.Hacer_uno_pivote(fila=matriz[i], indice_columna=i)
+  m = len(matriz)
+  n_total = len(matriz[0])
+  n_izq = tamaño
+
+  i = 0
+  j = 0
+
+  while i < tamaño and j < n_izq:
+    fila_piv, col_piv = funciones.buscar_siguiente_pivote(matriz=matriz, fila_inicio=i, col_inicio=j, n_cols_izq=n_izq)
+    if fila_piv is None:
+      solucion = False
+      break
+
+    if fila_piv != i:
+      matriz = funciones.Intercambiar_filas(matriz=matriz, fila_base=i, fila_destino=fila_piv)
+      pasos_inversa.append(copy.deepcopy(matriz))
+      id_pasos_inversa.append([1, i, fila_piv])
+
+    if matriz[i][col_piv] != 1:
+      matriz[i], factor = funciones.Hacer_uno_pivote(fila=matriz[i], indice_columna=col_piv)
       pasos_inversa.append(copy.deepcopy(matriz))
       id_pasos_inversa.append([2, factor])
-      
-    matriz = funciones.Hacer_cero_abajo(matriz=matriz, indice_pivote=i)
-    pasos_inversa.append(copy.deepcopy(matriz))
-    id_pasos_inversa.append([3])
-    matriz = funciones.Hacer_cero_arriba(matriz=matriz, indice_pivote=i)
-    pasos_inversa.append(copy.deepcopy(matriz))
-    id_pasos_inversa.append([4])
-    
-    # al final del algoritmo
+
+    matriz = funciones.Hacer_cero_abajo_ij(matriz=matriz, fila_pivote=i, col_pivote=col_piv)
+    pasos_inversa.append(copy.deepcopy(matriz)); id_pasos_inversa.append([3, col_piv])
+
+    matriz = funciones.Hacer_cero_arriba_ij(matriz=matriz, fila_pivote=i, col_pivote=col_piv)
+    pasos_inversa.append(copy.deepcopy(matriz)); id_pasos_inversa.append([4, col_piv])
+
+    i += 1
+    j = col_piv + 1
+
   if not pasos_inversa or pasos_inversa[-1] is not matriz:
     pasos_inversa.append(copy.deepcopy(matriz)); id_pasos_inversa.append(["final"])
-      
+
   return pasos_inversa, id_pasos_inversa, solucion
 
 def obtener_inversa(matriz):
