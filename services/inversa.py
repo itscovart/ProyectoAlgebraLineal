@@ -31,11 +31,11 @@ def Gauss_Jordan_Inversa(matriz, tamaño):
 
     if i != (len(matriz) - 1):
       matriz = funciones.Hacer_cero_abajo_ij(matriz=matriz, fila_pivote=i, col_pivote=col_piv)
-      pasos_inversa.append(copy.deepcopy(matriz)); id_pasos_inversa.append([3, col_piv])
+      pasos_inversa.append(copy.deepcopy(matriz)); id_pasos_inversa.append([3, i, col_piv])
 
     if i != 0:
       matriz = funciones.Hacer_cero_arriba_ij(matriz=matriz, fila_pivote=i, col_pivote=col_piv)
-      pasos_inversa.append(copy.deepcopy(matriz)); id_pasos_inversa.append([4, col_piv])
+      pasos_inversa.append(copy.deepcopy(matriz)); id_pasos_inversa.append([4, i, col_piv])
 
     i += 1
     j = col_piv + 1

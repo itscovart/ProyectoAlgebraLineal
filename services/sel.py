@@ -29,11 +29,11 @@ def gauss_jordan_sel(coeficientes, igualdades):
 
     if i != (len(matriz_unida) - 1):
       matriz_unida = funciones.Hacer_cero_abajo_ij(matriz=matriz_unida, fila_pivote=i, col_pivote=col_piv)
-      pasos_sel.append(copy.deepcopy(matriz_unida)); id_pasos.append([3, col_piv])
+      pasos_sel.append(copy.deepcopy(matriz_unida)); id_pasos.append([3, i, col_piv])
 
     if i != 0:
       matriz_unida = funciones.Hacer_cero_arriba_ij(matriz=matriz_unida, fila_pivote=i, col_pivote=col_piv)
-      pasos_sel.append(copy.deepcopy(matriz_unida)); id_pasos.append([4, col_piv])
+      pasos_sel.append(copy.deepcopy(matriz_unida)); id_pasos.append([4, i, col_piv])
 
     pivot_cols.append(col_piv)
     i += 1
