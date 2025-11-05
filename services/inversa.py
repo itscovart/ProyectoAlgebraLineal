@@ -29,11 +29,13 @@ def Gauss_Jordan_Inversa(matriz, tamaño):
       pasos_inversa.append(copy.deepcopy(matriz))
       id_pasos_inversa.append([2, factor])
 
-    matriz = funciones.Hacer_cero_abajo_ij(matriz=matriz, fila_pivote=i, col_pivote=col_piv)
-    pasos_inversa.append(copy.deepcopy(matriz)); id_pasos_inversa.append([3, col_piv])
+    if i != (len(matriz) - 1):
+      matriz = funciones.Hacer_cero_abajo_ij(matriz=matriz, fila_pivote=i, col_pivote=col_piv)
+      pasos_inversa.append(copy.deepcopy(matriz)); id_pasos_inversa.append([3, col_piv])
 
-    matriz = funciones.Hacer_cero_arriba_ij(matriz=matriz, fila_pivote=i, col_pivote=col_piv)
-    pasos_inversa.append(copy.deepcopy(matriz)); id_pasos_inversa.append([4, col_piv])
+    if i != 0:
+      matriz = funciones.Hacer_cero_arriba_ij(matriz=matriz, fila_pivote=i, col_pivote=col_piv)
+      pasos_inversa.append(copy.deepcopy(matriz)); id_pasos_inversa.append([4, col_piv])
 
     i += 1
     j = col_piv + 1
@@ -46,13 +48,10 @@ def Gauss_Jordan_Inversa(matriz, tamaño):
 def obtener_inversa(matriz):
   if (validaciones.validar_matriz_cuadrada(matriz=matriz) == False):
     respuesta = ["Recuerda que para calcular la inversa de una matriz, esta matriz tiene que ser cuadrada, Amxm", 0, 0]
-  valor_determinante = determinante.Gauss_Jordan_Determinante(matriz=matriz)[0]
-  if(valor_determinante == 0):
-    respuesta = ["La matriz tiene como determinante 0 por lo tanto no es una matriz invertible", 0, 0]
   else:
     tamaño = len(matriz)
     matriz_identidad = funciones.crear_matriz_identidad(tamaño=tamaño)
     matriz_unida = funciones.concatenar_matrices(matriz_izquierda=matriz, matriz_derecha=matriz_identidad)
     inversa, id_pasos, solucion = Gauss_Jordan_Inversa(matriz=matriz_unida, tamaño=tamaño)
-    respuesta = ["La matriz original si tiene inversa", inversa, id_pasos] if solucion == True else ["La matriz no se pudo resolver debido a que no se encontraron mas pivotes distinto de 0", inversa, id_pasos]
+    respuesta = ["La matriz original si tiene inversa", inversa, id_pasos] if solucion == True else ["La matriz no tiene inversa debido a que no todos los pivotes de la diagonal principal son 1", inversa, id_pasos]
   return respuesta
