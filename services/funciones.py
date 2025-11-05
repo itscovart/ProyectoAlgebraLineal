@@ -26,40 +26,6 @@ def Hacer_uno_pivote(fila, indice_columna) -> list:
     nueva_fila[i] = pivote * valor
   return nueva_fila, factor
 
-# """
-#   Funcion para hacer ceros abajo del pivote
-#   Input: matriz e indice del pivote
-#   Output: Matriz con filas afectadas
-# """
-# def Hacer_cero_abajo(matriz, indice_pivote) -> list:
-#   nueva_matriz = copy.deepcopy(matriz)
-#   if(indice_pivote == (len(nueva_matriz) - 1)):
-#     res = nueva_matriz
-#   else:
-#     for i, fila in enumerate(nueva_matriz[indice_pivote + 1:], indice_pivote + 1):
-#       factor = nueva_matriz[i][indice_pivote]
-#       for j, _ in enumerate(fila):
-#         nueva_matriz[i][j] -= factor * nueva_matriz[indice_pivote][j]
-#     res = nueva_matriz
-#   return res
-
-# """
-#   Funcion para hacer ceros arriba del pivote
-#   Input: matriz e indice del pivote
-#   Output: Matriz con filas afectadas
-# """
-# def Hacer_cero_arriba(matriz, indice_pivote) -> list:
-#   nueva_matriz = copy.deepcopy(matriz)
-#   if(indice_pivote == 0):
-#     res = nueva_matriz
-#   else:
-#     for i, fila in enumerate(nueva_matriz[:indice_pivote]):
-#       factor = nueva_matriz[i][indice_pivote]
-#       for j, _ in enumerate(fila):
-#         nueva_matriz[i][j] -= factor * nueva_matriz[indice_pivote][j]
-#     res = nueva_matriz
-#   return res
-
 def Hacer_cero_abajo_ij(matriz, fila_pivote, col_pivote) -> list:
   """
   Hace ceros por debajo en la columna col_pivote usando la fila fila_pivote como pivote.
