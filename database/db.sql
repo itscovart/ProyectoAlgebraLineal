@@ -11,11 +11,3 @@ CREATE TABLE IF NOT EXISTS `Prueba` (
   `fecha_registro` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_prueba`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-.env
-DB_HOST=turntable.proxy.rlwy.net
-DB_PORT=48281
-DB_USER=root
-DB_PASSWORD=ReCZmGuTKRKpLuOxSdgQABptzaviaVqG
-DB_NAME=railway
