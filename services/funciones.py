@@ -115,7 +115,7 @@ def procesar_solucion_sel_por_pivotes(matriz, pivot_cols):
   """
   inconsistencia, fila_inconsistencia = validar_incosistencia_sel(matriz=matriz)
   if inconsistencia:
-    return f"El sistema de ecuaciones lineales no tiene conjunto solucion debido a una inconsistencia en la ecuacion resultante {fila_inconsistencia + 1}"
+    return f"El sistema de ecuaciones lineales tiene conjunto solucion vacio debido a una inconsistencia en la ecuacion resultante {fila_inconsistencia + 1}"
   
   coeficientes, igualdades = separar_matriz_aumentada(matriz=matriz)
   n = len(coeficientes[0]) if coeficientes else 0
