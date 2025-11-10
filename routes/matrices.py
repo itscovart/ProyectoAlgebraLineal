@@ -35,9 +35,13 @@ async def procesar_matriz(
         "matrices_pasos": matrices_solucion,
         "matrices_pasos_id": id_pasos
     }
-    
+    validacionesAD = [1, 0, 1, 1, 0, 1]
+    validacionesM = [1, 0, 1, 1, 1, 1, 1, 1]
+    validacionesD = [1, 1]
+    validacionesBP = [1, 1, 1, 1, 1]
+    registrosDrive = [1, 1, "Link1", "Link2"]
     try:
-        exito_registro = registrar_resultado_prueba(datos_respuesta)
+        exito_registro = registrar_resultado_prueba(datos_respuesta, validacionesAD, validacionesM, validacionesD, validacionesBP, registrosDrive)
         if not exito_registro:
             logger.warning("Fallo al registrar la prueba en la base de datos.")
     except Exception as e:

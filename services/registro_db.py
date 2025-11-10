@@ -55,7 +55,7 @@ def registrar_resultado_prueba(data: Dict[str, Any], validacionesAD: list, valid
                 matriz_inicial_json = json.dumps(data.get("matriz_inicial", []), ensure_ascii=False)
 
                 sql = """
-                    INSERT INTO Prueba (
+                    INSERT INTO Datos (
                         version,
                         id_operacion,
                         matriz_inicial_json, 
@@ -84,7 +84,7 @@ def registrar_resultado_prueba(data: Dict[str, Any], validacionesAD: list, valid
                         formato_correcto,
                         link_imagen,
                         segundo_link_imagen,
-                        es_correcto,
+                        es_correcto
                     )
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
