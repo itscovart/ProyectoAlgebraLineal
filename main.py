@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import matrices
+from routes import matrices, foto
 
 app = FastAPI(title="API para resolver matrices con Gauss-Jordan", version="1.0")
 origins = [
@@ -18,6 +18,7 @@ app.add_middleware(
 )
 
 app.include_router(matrices.router, prefix="/matrices", tags=["Matrices"])
+app.include_router(foto.router, prefix="/foto", tags=["Foto"])
 
 @app.get('/')
 def root():
