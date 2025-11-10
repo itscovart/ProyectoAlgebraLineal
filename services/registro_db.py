@@ -35,7 +35,7 @@ def inicializar_bd():
     except Exception as e:
         print(e)
 
-def registrar_resultado_prueba(data: Dict[str, Any]) -> bool:
+def registrar_resultado_prueba(data: Dict[str, Any], validacionesAD: list, validacionesM: list, validacionesD: list, validacionesBP: list, registrosDrive: list ) -> bool:
     try:
         inicializar_bd() 
         db_config_con_bd = DB_CONFIG.copy()
@@ -45,14 +45,6 @@ def registrar_resultado_prueba(data: Dict[str, Any]) -> bool:
             with conn.cursor() as cursor:
                 operacion = str(data.get("operacion", "DESCONOCIDA"))
                 comentario_obj = data.get("comentario", None)
-
-                matrices_pasos = data.get("matrices_pasos", [])
-                if isinstance(matrices_pasos, (list, dict)):
-                    num_pasos = len(matrices_pasos)
-                else:
-                    num_pasos = 1 if matrices_pasos else 0
-
-                resultado_es_valido = comentario_obj is not None and "Error" not in str(comentario_obj)
 
                 comentario_str = (
                     json.dumps(comentario_obj, ensure_ascii=False)
@@ -64,23 +56,71 @@ def registrar_resultado_prueba(data: Dict[str, Any]) -> bool:
 
                 sql = """
                     INSERT INTO Prueba (
-                        operacion, 
-                        resultado_es_valido, 
-                        num_pasos, 
+                        version,
+                        id_operacion,
                         matriz_inicial_json, 
-                        comentario_resultado
+                        operacion, 
+                        resultado,
+                        jerarquia_visual,
+                        menu_visible_simple,
+                        adaptabilidad_accesibilidad,
+                        consistencia,
+                        simplicidad_claridad,
+                        prevencion_errores,
+                        matriz_cuadrada,
+                        matriz_aumentada,
+                        numero_filas,
+                        numero_columnas,
+                        factor,
+                        pivote,
+                        posicion_subindices_distintos,
+                        terminos_independientes_matriz_aumentada,
+                        dropbox_archivo,
+                        operacion_realizar,
+                        formato_archivo_txt,
+                        unico_archivo,
+                        filas_tamaño_iguales,
+                        elementos_reales,
+                        formato_correcto,
+                        link_imagen,
+                        segundo_link_imagen,
+                        es_correcto,
                     )
-                    VALUES (%s, %s, %s, %s, %s)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
 
                 cursor.execute(
                     sql,
                     (
-                        operacion,
-                        resultado_es_valido,
-                        num_pasos,
+                        os.getenv("VERSION"),
+                        registrosDrive[0],
                         matriz_inicial_json,
+                        operacion,
                         comentario_str,
+                        validacionesAD[0],
+                        validacionesAD[1],
+                        validacionesAD[2],
+                        validacionesAD[3],
+                        validacionesAD[4],
+                        validacionesAD[5],
+                        validacionesM[0],
+                        validacionesM[1],
+                        validacionesM[2],
+                        validacionesM[3],
+                        validacionesM[4],
+                        validacionesM[5],
+                        validacionesM[6],
+                        validacionesM[7],
+                        validacionesD[0],
+                        validacionesD[1],
+                        validacionesBP[0],
+                        validacionesBP[1],
+                        validacionesBP[2],
+                        validacionesBP[3],
+                        validacionesBP[4],
+                        registrosDrive[2],
+                        registrosDrive[3],
+                        registrosDrive[1],
                     ),
                 )
                 conn.commit()
