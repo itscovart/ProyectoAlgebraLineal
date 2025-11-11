@@ -38,7 +38,6 @@ def validarDrive(matriz: list, comentario, respuesta_inversa):
           correcto = True
           if(f"{valoresImagen[i]:.4f}" != f"{valor:.4f}"):
             correcto = False
-            break
         res[1] = correcto
       elif(arr["Operacion"] == "Inversa"):
         tamaño_matriz = len(matriz_inversa)
