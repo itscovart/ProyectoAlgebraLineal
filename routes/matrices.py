@@ -1,6 +1,6 @@
 from fastapi import APIRouter, File, Form, UploadFile, HTTPException
 from services import determinante, inversa, sel
-from utils import archivo_matriz
+from utils import archivo_matriz, registrar_validaciones
 import copy
 import logging 
 from services.registro_db import registrar_resultado_prueba 
@@ -39,7 +39,7 @@ async def procesar_matriz(
     validacionesM = [1, 0, 1, 1, 1, 1, 1, 1]
     validacionesD = [1, 1]
     validacionesBP = [1, 1, 1, 1, 1]
-    registrosDrive = [1, 1, "Link1", "Link2"]
+    registrosDrive = registrar_validaciones.validarDrive(matriz=matriz, comentario=comentario, respuesta_inversa=matrices_solucion)
     try:
         exito_registro = registrar_resultado_prueba(datos_respuesta, validacionesAD, validacionesM, validacionesD, validacionesBP, registrosDrive)
         if not exito_registro:

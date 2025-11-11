@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 from services import validaciones
+from utils.convertidores import fraction_number
 
 def convertir_txt_matriz(contenido: str, separador: str = ",") -> list[list[float]]:
   filas = contenido.splitlines()
@@ -9,8 +10,7 @@ def convertir_txt_matriz(contenido: str, separador: str = ",") -> list[list[floa
       fila_valores = []
       for x in fila.split(separador):
         if '/' in x:
-          a, b = x.split('/')
-          valor = float(a) / float(b)
+          valor = fraction_number(x)
         else:
           valor = float(x)
         fila_valores.append(valor)
