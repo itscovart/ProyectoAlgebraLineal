@@ -1,3 +1,8 @@
+"""
+Funciones para inicializar la base de datos y registrar resultados de pruebas
+realizadas en el sistema de Álgebra Lineal. Maneja conexión MySQL y escritura
+de registros en la tabla Datos.
+"""
 import json
 import pymysql
 import os
@@ -16,18 +21,26 @@ DB_CONFIG = {
 
 SQL_FILE_PATH = os.path.join(os.path.dirname(__file__), '..', 'database', 'db.sql')
 
+"""
+Ejecuta el archivo SQL que crea la estructura de la base de datos.
+Si la BD ya existe, simplemente asegura que las tablas estén creadas.
+"""
 def inicializar_bd():
     try:
+        # Conectamos al servidor MySQL usando la configuración base (sin especificar DB aún).
         with pymysql.connect(**DB_CONFIG) as conn:
             with conn.cursor() as cursor:
+                # Leemos el archivo SQL completo que contiene las sentencias CREATE TABLE.
                 with open(SQL_FILE_PATH, 'r', encoding='utf8') as f:
                     sql_script = f.read()
 
+                # Ejecutamos cada sentencia SQL por separado.
                 for statement in sql_script.split(';'):
                     statement = statement.strip()
                     if statement:
                         cursor.execute(statement)
 
+                # Guardamos los cambios realizados en la base de datos.
                 conn.commit()
 
     except FileNotFoundError:
@@ -35,15 +48,28 @@ def inicializar_bd():
     except Exception as e:
         print(e)
 
+"""
+Inserta en la tabla Datos un registro completo con:
+  - información de operación,
+  - validaciones intuitivas, matemáticas y de diseño,
+  - datos de Google Drive,
+  - matriz inicial y resultado.
+Devuelve True si el registro se almacena correctamente.
+"""
 def registrar_resultado_prueba(data: Dict[str, Any], validacionesAD: list, validacionesM: list, validacionesD: list, validacionesBP: list, registrosDrive: list ) -> bool:
     try:
+        # Aseguramos que la BD y sus tablas estén listas antes de insertar.
         inicializar_bd() 
+        # Creamos una copia de la configuración para agregar el nombre de la base de datos.
         db_config_con_bd = DB_CONFIG.copy()
         db_config_con_bd["db"] = "railway"
 
+        # Conectamos directamente a la base de datos 'railway'.
         with pymysql.connect(**db_config_con_bd) as conn:
             with conn.cursor() as cursor:
+                # Obtenemos el tipo de operación realizada (Determinante, Inversa, SEL, etc.).
                 operacion = str(data.get("operacion", "DESCONOCIDA"))
+                # Convertimos el comentario/resultado en string o JSON serializado.
                 comentario_obj = data.get("comentario", None)
 
                 comentario_str = (
@@ -52,8 +78,10 @@ def registrar_resultado_prueba(data: Dict[str, Any], validacionesAD: list, valid
                     else str(comentario_obj)
                 )
 
+                # Guardamos la matriz inicial como JSON para tener un registro exacto.
                 matriz_inicial_json = json.dumps(data.get("matriz_inicial", []), ensure_ascii=False)
 
+                # Sentencia INSERT con todos los campos definidos en la tabla Datos.
                 sql = """
                     INSERT INTO Datos (
                         version,
@@ -89,6 +117,7 @@ def registrar_resultado_prueba(data: Dict[str, Any], validacionesAD: list, valid
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
 
+                # Ejecutamos la inserción pasando todos los valores en el mismo orden que la tabla.
                 cursor.execute(
                     sql,
                     (
@@ -123,10 +152,13 @@ def registrar_resultado_prueba(data: Dict[str, Any], validacionesAD: list, valid
                         registrosDrive[1],
                     ),
                 )
+                # Confirmamos la escritura en la base de datos.
                 conn.commit()
 
+        # Si todo sale bien, regresamos True indicando que el registro fue exitoso.
         return True
 
+    # En caso de error, lo imprimimos y devolvemos False.
     except Exception as e:
         print(e)
         return False

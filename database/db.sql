@@ -1,6 +1,10 @@
+-- Base de datos para almacenar pruebas y resultados de operaciones con matrices.
+-- Cada registro corresponde a una ejecucion del sistema, con informacion visual, matematica y de validacion.
+
 CREATE DATABASE IF NOT EXISTS `railway`;
 USE `railway`;
 
+-- Tabla principal donde se guardan las pruebas y parametros evaluados.
 CREATE TABLE IF NOT EXISTS `Datos` (
   -- Informacion Operacion
   `id_prueba` INT NOT NULL AUTO_INCREMENT,
