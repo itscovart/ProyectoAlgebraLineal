@@ -13,7 +13,8 @@ app = FastAPI(title="API para resolver matrices con Gauss-Jordan", version="1.0"
 origins = [
     "http://localhost:5173",
     "http://localhost", 
-    "https://frontendlineal-production.up.railway.app"
+    "https://frontendlineal-production.up.railway.app",
+    "http://192.168.100.46:5173"
 ]
 
 app.add_middleware(
