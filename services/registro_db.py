@@ -98,9 +98,13 @@ def registrar_resultado_prueba(data: Dict[str, Any], validacionesAD: list, valid
 
                     else:
                         comentario_str = None
-
+                matriz_inicial = data.get("matriz_inicial", [])
+                tamaño_matriz = ""
+                if len(matriz_inicial) > 0:
+                    tamaño_matriz = f"{len(matriz_inicial)}x{len(matriz_inicial[0])}"
+                
                 # Guardamos la matriz inicial como JSON para tener un registro exacto.
-                matriz_inicial_json = json.dumps(data.get("matriz_inicial", []), ensure_ascii=False)
+                matriz_inicial_json = json.dumps((matriz_inicial), ensure_ascii=False)
 
                 # Sentencia INSERT con todos los campos definidos en la tabla Datos.
                 sql = """
@@ -108,6 +112,7 @@ def registrar_resultado_prueba(data: Dict[str, Any], validacionesAD: list, valid
                         version,
                         id_operacion,
                         matriz_inicial_json, 
+                        tamaño_matriz,
                         operacion, 
                         resultado,
                         jerarquia_visual,
@@ -145,6 +150,7 @@ def registrar_resultado_prueba(data: Dict[str, Any], validacionesAD: list, valid
                         os.getenv("VERSION"),
                         registrosDrive[0],
                         matriz_inicial_json,
+                        tamaño_matriz,
                         operacion,
                         comentario_str,
                         validacionesAD[0],

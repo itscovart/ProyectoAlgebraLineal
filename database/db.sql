@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `Datos` (
   `id_operacion` INT NOT NULL,
   `matriz_inicial_json` JSON NOT NULL,
   `imagen_matriz` TEXT,
+  `tamaño_matriz` VARCHAR(11) NOT NULL,
   `operacion` VARCHAR(20) NOT NULL,
   `resultado` TEXT NULL,
   -- Parametros Intuitivo (Anti-Dumbs)
