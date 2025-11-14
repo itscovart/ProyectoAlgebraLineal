@@ -110,25 +110,63 @@ def separar_matriz_aumentada(matriz):
 
 def procesar_solucion_sel_por_pivotes(matriz, pivot_cols):
   """
-  'pivot_cols' es la lista (por fila de pivote) de índices de columnas del bloque izquierdo donde cayó cada pivote.
-  Reporta variables pivote con su valor y marca libres las demás, sin reordenar columnas.
+  'pivot_cols' es la lista (por fila de pivote) de índices de columnas del bloque izquierdo
+  donde cayó cada pivote.
+
+  Comportamiento:
+    - NO muestra variables libres (se omiten del dict).
+    - Las variables pivote se expresan en función de las libres.
+    - Si el sistema es inconsistente -> regresa mensaje y 1.
+    - Si es consistente -> regresa dict { v_i: expresión } y 0.
+
+  Se asume forma reducida (Gauss-Jordan).
   """
+
+  # 1) Validar inconsistencia
   inconsistencia, fila_inconsistencia = validar_incosistencia_sel(matriz=matriz)
   if inconsistencia:
-    return f"El sistema de ecuaciones lineales tiene conjunto solucion vacio debido a una inconsistencia en la ecuacion resultante {fila_inconsistencia + 1}"
-  
+    return f"El sistema tiene conjunto solución vacío por inconsistencia en la ecuación {fila_inconsistencia + 1}"
+
   coeficientes, igualdades = separar_matriz_aumentada(matriz=matriz)
-  n = len(coeficientes[0]) if coeficientes else 0
-  pivot_set = set(pivot_cols)
+  if not coeficientes:
+    return [{}, 0]
+
+  n = len(coeficientes[0])
+
+  # columnas pivote
+  pivot_set = {c for c in pivot_cols if c is not None}
+  # columnas libres
+  free_cols = [j for j in range(n) if j not in pivot_set]
+
   solucion = {}
-  # Variables pivote: valor tomado del RHS de su fila
-  for fila_idx, col_idx in enumerate(pivot_cols):
-    if col_idx is not None and col_idx < n:
-      solucion[f"v{col_idx + 1}"] = igualdades[fila_idx][0]
-  # Variables libres: columnas que no aparecen en pivot_set
-  for col in range(n):
-    if col not in pivot_set:
-      solucion[f"v{col + 1}"] = " ∈ ℝ"
+
+  # 2) Expresar solo las variables pivote
+  for fila_idx, col_pivote in enumerate(pivot_cols):
+    if col_pivote is None:
+      continue
+    if col_pivote < 0 or col_pivote >= n:
+      continue
+
+    valor_igualdad = igualdades[fila_idx][0]   # término independiente
+    valor_variable = f"{valor_igualdad}"
+
+    # sumar términos asociados a variables libres
+    for j in free_cols:
+      coef = coeficientes[fila_idx][j]
+      if coef == 0:
+        continue
+
+      signo = " - " if coef > 0 else " + "
+      magnitud = abs(coef)
+      if magnitud == 1:
+        coef_str = ""
+      else:
+        coef_str = f"{magnitud}"
+
+      valor_variable += f"{signo}{coef_str}v{j + 1}"
+
+    solucion[f"v{col_pivote + 1}"] = valor_variable
+
   return solucion
 
 def obtener_dict_valores_sel(claves, valores):

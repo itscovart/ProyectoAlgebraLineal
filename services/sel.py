@@ -20,7 +20,7 @@ def gauss_jordan_sel(coeficientes, igualdades):
     if fila_piv != i:
       matriz_unida = funciones.Intercambiar_filas(matriz=matriz_unida, fila_base=i, fila_destino=fila_piv)
       pasos_sel.append(copy.deepcopy(matriz_unida))
-      id_pasos.append([1, i, fila_piv])  # swap filas
+      id_pasos.append([1, i, fila_piv])
 
     if matriz_unida[i][col_piv] != 1:
       matriz_unida[i], factor = funciones.Hacer_uno_pivote(fila=matriz_unida[i], indice_columna=col_piv)
@@ -40,12 +40,11 @@ def gauss_jordan_sel(coeficientes, igualdades):
     j = col_piv + 1
 
   solucion = funciones.procesar_solucion_sel_por_pivotes(matriz=matriz_unida, pivot_cols=pivot_cols)
-  return solucion, pasos_sel, id_pasos
+  return [solucion, pasos_sel, id_pasos]
 def resolver_matriz(matriz):
   if(validaciones.validar_tamaño_minimo_sel(matriz=matriz)):
     coeficientes, igualdades = funciones.separar_matriz_aumentada(matriz=matriz)
-    solucion, matriz_pasos, id_matriz_pasos = gauss_jordan_sel(coeficientes=coeficientes, igualdades=igualdades)
-    resultado = [solucion, matriz_pasos, id_matriz_pasos]
+    resultado = gauss_jordan_sel(coeficientes=coeficientes, igualdades=igualdades)
   else:
     resultado = ["La matriz no cumple con el tamaño minimo para poder resolver un sistema de ecuaciones que es de 1x2", 0, 0]
   return resultado
