@@ -71,9 +71,8 @@ def validarDrive(matriz: list, comentario, respuesta_inversa):
   res = [select_or_next_value(str(matriz)), 0, 0, 0]
   # Recorremos todos los registros para encontrar coincidencias con la matriz enviada.
   for arr in registros:
-    # Si la matriz coincide exactamente con el registro en Google Sheets...
+    # Si la matriz coincide exactamente con el registro en Google Sheets
     if (str(matriz) == arr["Matriz"]):
-      print(arr["PrimerLink"])
       resultado = arr["ResultadoImagen"]
       if(arr["Operacion"] == "SEL"):
         # Caso SEL: comparamos cada valor numérico con el resultado calculado por nuestro sistema.
