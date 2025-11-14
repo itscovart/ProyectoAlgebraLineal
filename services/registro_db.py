@@ -14,7 +14,7 @@ load_dotenv()
 DB_CONFIG = {
     "host": os.getenv("DB_HOST"),
     "user": os.getenv("DB_USER"),
-    "password": os.getenv("DB_PASSWORD",),
+    "password": os.getenv("DB_PASSWORD"),
     "port": int(os.getenv("DB_PORT")),
     "cursorclass": pymysql.cursors.DictCursor
 }
@@ -99,9 +99,12 @@ def registrar_resultado_prueba(data: Dict[str, Any], validacionesAD: list, valid
                     else:
                         comentario_str = None
                 matriz_inicial = data.get("matriz_inicial", [])
-                tamaño_matriz = ""
-                if len(matriz_inicial) > 0:
-                    tamaño_matriz = f"{len(matriz_inicial)}x{len(matriz_inicial[0])}"
+                if isinstance(matriz_inicial, list) and len(matriz_inicial) > 0 and isinstance(matriz_inicial[0], list):
+                    filas = len(matriz_inicial)
+                    columnas = len(matriz_inicial[0])
+                    tamaño_matriz = f"{filas}x{columnas}"
+                else:
+                    tamaño_matriz = None
                 
                 # Guardamos la matriz inicial como JSON para tener un registro exacto.
                 matriz_inicial_json = json.dumps((matriz_inicial), ensure_ascii=False)
