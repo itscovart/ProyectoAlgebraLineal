@@ -14,7 +14,8 @@ origins = [
     "http://localhost:5173",
     "http://localhost", 
     "https://frontendlineal-production.up.railway.app",
-    "http://192.168.100.46:5173"
+    "http://192.168.100.46:5173",
+    "https://solumatrix.vercel.app/"
 ]
 
 app.add_middleware(
