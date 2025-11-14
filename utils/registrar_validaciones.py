@@ -67,7 +67,7 @@ def validarDrive(matriz: list, comentario, respuesta_inversa):
     matriz_inversa = matriz
   # Estructura base de la respuesta:
   # [ id_registro, validación_correcta, primer_link, segundo_link ]
-  res = [select_or_next_value(str(matriz)), 0, 0, 0]
+  res = [select_or_next_value(str(matriz)), None, None, None]
   # Recorremos todos los registros para encontrar coincidencias con la matriz enviada.
   for arr in registros:
     # Si la matriz coincide exactamente con el registro en Google Sheets...
