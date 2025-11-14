@@ -26,7 +26,7 @@ async def procesar_matriz(
     else:
         raise HTTPException(status_code=400, detail="Operacion no valida")
     
-    comentario, matrices_solucion, id_pasos = respuesta
+    comentario, matrices_solucion, id_pasos = respuesta    
     
     datos_respuesta = {
         "operacion": operacion,
@@ -35,10 +35,14 @@ async def procesar_matriz(
         "matrices_pasos": matrices_solucion,
         "matrices_pasos_id": id_pasos
     }
+    
     validacionesAD = [1, 0, 1, 1, 0, 1]
-    validacionesM = [1, 0, 1, 1, 1, 1, 1, 1]
-    validacionesD = [1, 1]
-    validacionesBP = [1, 1, 1, 1, 1]
+    if(operacion != "SEL"):
+        validacionesM = registrar_validaciones.validarM(matriz_cuadrada=1, matriz_aumentada=0)
+    else:
+        validacionesM = registrar_validaciones.validarM(matriz_cuadrada=0, matriz_aumentada=1)
+    validacionesD = registrar_validaciones.validarD()
+    validacionesBP = registrar_validaciones.validarBP()
     registrosDrive = registrar_validaciones.validarDrive(matriz=matriz, comentario=comentario, respuesta_inversa=matrices_solucion)
     try:
         exito_registro = registrar_resultado_prueba(datos_respuesta, validacionesAD, validacionesM, validacionesD, validacionesBP, registrosDrive)
