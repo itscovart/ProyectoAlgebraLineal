@@ -61,7 +61,10 @@ def validarDrive(matriz: list, comentario, respuesta_inversa):
   # Convertimos cada fila de la hoja en un diccionario clave-valor.
   registros = [dict(zip(keys, fila)) for fila in values]
   # La última matriz en respuesta_inversa contiene la inversa final calculada.
-  matriz_inversa = respuesta_inversa[-1]
+  if len(respuesta_inversa > 0):
+    matriz_inversa = respuesta_inversa[-1]
+  else:
+    matriz_inversa = matriz
   # Estructura base de la respuesta:
   # [ id_registro, validación_correcta, primer_link, segundo_link ]
   res = [select_or_next_value(str(matriz)), 0, 0, 0]
