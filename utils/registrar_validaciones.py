@@ -1,3 +1,7 @@
+import copy, json
+from math import floor
+from services.funciones import normalizar_matriz, matrices_iguales
+
 """
 Funciones para validar resultados comparando datos generados por el sistema
 con registros almacenados en Google Sheets. Estas validaciones se utilizan
@@ -61,13 +65,10 @@ def validarDrive(matriz: list, comentario, respuesta_inversa):
   # Convertimos cada fila de la hoja en un diccionario clave-valor.
   registros = [dict(zip(keys, fila)) for fila in values]
   # La última matriz en respuesta_inversa contiene la inversa final calculada.
-  if len(respuesta_inversa) > 0:
-    matriz_inversa = respuesta_inversa[-1]
-  else:
-    matriz_inversa = matriz
+  matriz_inversa = respuesta_inversa[-1]
   # Estructura base de la respuesta:
   # [ id_registro, validación_correcta, primer_link, segundo_link ]
-  res = [select_or_next_value(str(matriz)), None, None, None]
+  res = [select_or_next_value(str(matriz)), 0, 0, 0]
   # Recorremos todos los registros para encontrar coincidencias con la matriz enviada.
   for arr in registros:
     # Si la matriz coincide exactamente con el registro en Google Sheets...
@@ -87,14 +88,16 @@ def validarDrive(matriz: list, comentario, respuesta_inversa):
             valoresImagen.append(x)
         for i, valor in enumerate(comentario.values()):
           correcto = True
-          if(f"{valoresImagen[i]:.4f}" != f"{valor:.4f}"):
+          if(f"{float(valoresImagen[i]):.4f}" != f"{float(valor):.4f}"):
             correcto = False
         res[1] = correcto
       # Caso Inversa: extraemos la parte derecha de la matriz aumentada [A|I] y la comparamos.
       elif(arr["Operacion"] == "Inversa"):
-        tamaño_matriz = len(matriz_inversa)
-        matriz_inversa_codigo = [fila[tamaño_matriz:] for fila in matriz_inversa]
-        res[1] = (str(matriz_inversa_codigo) == str(resultado))
+        tamaño_matriz = int(len(matriz_inversa[0])/2)
+        matriz_normalizada_codigo = normalizar_matriz(matriz=copy.deepcopy(matriz_inversa))
+        matriz_inversa_codigo = [fila[tamaño_matriz:] for fila in matriz_normalizada_codigo]
+        matriz_normalizada_foto = json.loads(resultado)
+        res[1] = matrices_iguales(m1=matriz_inversa_codigo, m2=matriz_normalizada_foto)
       # Caso Determinante: simplemente comprobamos si el valor esperado aparece en nuestro comentario.
       elif(arr["Operacion"] == "Determinante"):
         res[1] = (resultado in comentario)
@@ -103,5 +106,3 @@ def validarDrive(matriz: list, comentario, respuesta_inversa):
   # Retornamos la lista con todas las validaciones realizadas.
   return res
           
-        
-# def comparar_resultados(resultado):

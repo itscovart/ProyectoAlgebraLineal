@@ -8,7 +8,7 @@ import pymysql
 import os
 from typing import Dict, Any
 from dotenv import load_dotenv 
-
+from services.funciones import normalizar_matriz
 load_dotenv() 
 
 DB_CONFIG = {
@@ -69,14 +69,35 @@ def registrar_resultado_prueba(data: Dict[str, Any], validacionesAD: list, valid
             with conn.cursor() as cursor:
                 # Obtenemos el tipo de operación realizada (Determinante, Inversa, SEL, etc.).
                 operacion = str(data.get("operacion", "DESCONOCIDA"))
-                # Convertimos el comentario/resultado en string o JSON serializado.
-                comentario_obj = data.get("comentario", None)
+                if operacion != "Inversa":
+                    # Convertimos el comentario/resultado en string o JSON serializado.
+                    comentario_obj = data.get("comentario", None)
 
-                comentario_str = (
-                    json.dumps(comentario_obj, ensure_ascii=False)
-                    if isinstance(comentario_obj, (dict, list))
-                    else str(comentario_obj)
-                )
+                    comentario_str = (
+                        json.dumps(comentario_obj, ensure_ascii=False)
+                        if isinstance(comentario_obj, (dict, list))
+                        else str(comentario_obj)
+                    )
+                else:
+                    matrices_pasos = data.get("matrices_pasos", [])
+                    ultima_matriz = matrices_pasos[-1] if matrices_pasos else None
+
+                    if ultima_matriz:
+                        # n = columnas originales (A) = mitad de la matriz aumentada
+                        total_cols = len(ultima_matriz[0])
+                        n = total_cols // 2
+
+                        # Obtener sólo la matriz derecha (A^-1)
+                        matriz_inversa = [fila[n:] for fila in ultima_matriz]
+
+                        # Normalizar flotantes tipo 5.0 → 5
+                        matriz_inversa = normalizar_matriz(matriz_inversa)
+
+                        # Guardar como cadena en Base de Datos
+                        comentario_str = json.dumps(matriz_inversa, ensure_ascii=False)
+
+                    else:
+                        comentario_str = None
 
                 # Guardamos la matriz inicial como JSON para tener un registro exacto.
                 matriz_inicial_json = json.dumps(data.get("matriz_inicial", []), ensure_ascii=False)

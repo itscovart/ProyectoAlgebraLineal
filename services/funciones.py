@@ -2,7 +2,7 @@
 # Incluye acciones para intercambiar filas, generar matrices identidad, separar matrices aumentadas
 # y procesar soluciones de SEL.
 
-import copy
+import copy, math
 
 """
   Funcion para intercambiar filas de una matriz.
@@ -225,3 +225,22 @@ def validar_incosistencia_sel(matriz):
       resultado = [True, i]
       break
   return resultado
+
+def normalizar_matriz(matriz):
+    matriz_normalizada = []
+    for fila in matriz:
+        fila_normalizada = []
+        for x in fila:
+            if isinstance(x, float) and x.is_integer():
+                fila_normalizada.append(int(x))
+            else:
+                fila_normalizada.append(x)
+        matriz_normalizada.append(fila_normalizada)
+    return matriz_normalizada
+
+def matrices_iguales(m1, m2, tol=1e-9):
+    for f1, f2 in zip(m1, m2):
+        for x, y in zip(f1, f2):
+            if not math.isclose(x, y, abs_tol=tol):
+                return False
+    return True
