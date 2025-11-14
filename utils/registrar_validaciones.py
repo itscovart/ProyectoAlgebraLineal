@@ -66,13 +66,14 @@ def validarDrive(matriz: list, comentario, respuesta_inversa):
   registros = [dict(zip(keys, fila)) for fila in values]
   # La última matriz en respuesta_inversa contiene la inversa final calculada.
   matriz_inversa = respuesta_inversa[-1]
+  matriz_json = json.dumps(matriz, ensure_ascii=False)
   # Estructura base de la respuesta:
   # [ id_registro, validación_correcta, primer_link, segundo_link ]
   res = [select_or_next_value(str(matriz)), 0, 0, 0]
   # Recorremos todos los registros para encontrar coincidencias con la matriz enviada.
   for arr in registros:
     # Si la matriz coincide exactamente con el registro en Google Sheets
-    if (str(matriz) == arr["Matriz"]):
+    if (matriz_json == arr["Matriz"]):
       resultado = arr["ResultadoImagen"]
       if(arr["Operacion"] == "SEL"):
         # Caso SEL: comparamos cada valor numérico con el resultado calculado por nuestro sistema.
